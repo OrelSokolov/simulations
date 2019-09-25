@@ -27,7 +27,13 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @task = Task.new({
+        benchmark_version: "Any",
+        status: :todo,
+        report_table: true,
+        report_distribution: true,
+        threads: 20
+    })
   end
 
   # GET /tasks/1/edit

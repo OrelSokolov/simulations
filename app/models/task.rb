@@ -6,17 +6,6 @@ class Task < ApplicationRecord
 
   enum status: [:todo, :in_progress, :done, :failed]
 
-  def initialize(attributes = {})
-    attrs = {
-        benchmark_version: "Any",
-        status: :todo,
-        report_table: true,
-        report_distribution: true,
-        threads: 20
-    }
-    super(attrs)
-  end
-
   def report_s
     r = report&.gsub("\n", "<br/>")
     r = r&.gsub(" ", "&nbsp;")
