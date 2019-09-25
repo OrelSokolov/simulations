@@ -1,0 +1,75 @@
+br
+.card
+  .card-body
+    .row
+      .col-md-5
+        h5.card-title
+          == task.config
+          == task.simulations_s
+          - if task.todo?
+            span class="badge badge-info" TODO
+          - if task.in_progress?
+            span class="badge badge-warning" RUNNING, ETA: #{task.eta_s}
+          - if task.failed?
+            span class="badge badge-danger" FAILED
+          - if task.done?
+            span class="badge badge-success" DONE
+
+        h6.card-subtitle.mb-2.text-muted Benchmark version: #{task.benchmark_version}
+
+        div.card-text
+          strong Reports:
+          ul
+            - if task.report_table
+              li Table
+            - if task.report_distribution
+              li Distribution
+            - if task.report_w1
+              li W1
+            - if task.report_dragons
+              li Dragons
+
+      .col-md-4
+        div
+          strong Run options:
+        ul
+          li
+            strong Currency:
+            = task.currency
+            li
+              strong Bet per line:
+              = task.bet_per_line
+            li
+              strong Lines:
+              = task.line_count
+            li
+              strong Threads:
+              = task.threads
+
+      .col-md-3
+        div
+          strong Created at
+          br
+          span #{task.created_at}
+        div
+          strong Updated at
+          br
+          span #{task.updated_at}
+        br
+          - if task.todo?
+            == link_to("Edit", "/tasks/#{task.id}/edit", class: "btn btn-success btn-block")
+        br
+          - if task.done? || task.outdated? || task.failed?
+            == link_to("Delete", "/tasks/#{ task.id }?_csrf=#{csrf_token}", "data-method": "delete", "data-confirm": "Are you sure?", class: "btn btn-danger btn-block")
+        br
+          - if task.report_available?
+            a class="btn btn-primary btn-block" data-toggle="collapse" href="#report-#{task.id}" role="button" aria-expanded="false" aria-controls="report-#{task.id}" View report
+
+  - if task.in_progress?
+    div class="progress"
+      div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=task.progress aria-valuemin="0" aria-valuemax="100" style="width: #{task.progress}%" ETA #{task.eta_s}
+
+  - if task.report_available?
+    .collapse id="report-#{task.id}"
+      .jumbotron style="font-family: monospace"
+        == task.report

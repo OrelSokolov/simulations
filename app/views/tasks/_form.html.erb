@@ -1,0 +1,107 @@
+<%= form_with(model: task, local: true) do |form| %>
+  <% if task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.number_field :status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :simulations_count %>
+    <%= form.number_field :simulations_count %>
+  </div>
+
+  <div class="field">
+    <%= form.label :eta %>
+    <%= form.text_field :eta %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report %>
+    <%= form.text_area :report %>
+  </div>
+
+  <div class="field">
+    <%= form.label :config %>
+    <%= form.text_field :config %>
+  </div>
+
+  <div class="field">
+    <%= form.label :config_json %>
+    <%= form.text_area :config_json %>
+  </div>
+
+  <div class="field">
+    <%= form.label :benchmark_version %>
+    <%= form.text_field :benchmark_version %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report_table %>
+    <%= form.check_box :report_table %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report_distribution %>
+    <%= form.check_box :report_distribution %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report_graph %>
+    <%= form.check_box :report_graph %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report_w1 %>
+    <%= form.check_box :report_w1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :report_dragons %>
+    <%= form.check_box :report_dragons %>
+  </div>
+
+  <div class="field">
+    <%= form.label :progress %>
+    <%= form.text_field :progress %>
+  </div>
+
+  <div class="field">
+    <%= form.label :line_count %>
+    <%= form.text_field :line_count %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bet_per_line %>
+    <%= form.text_field :bet_per_line %>
+  </div>
+
+  <div class="field">
+    <%= form.label :currency %>
+    <%= form.text_field :currency %>
+  </div>
+
+  <div class="field">
+    <%= form.label :worker_id %>
+    <%= form.number_field :worker_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :threads %>
+    <%= form.number_field :threads %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

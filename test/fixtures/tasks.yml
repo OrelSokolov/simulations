@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: 1
+  simulations_count: 1
+  eta: MyString
+  report: MyText
+  config: MyString
+  config_json: MyText
+  benchmark_version: MyString
+  report_table: false
+  report_distribution: false
+  report_graph: false
+  report_w1: false
+  report_dragons: false
+  progress: 1.5
+  line_count: MyString
+  bet_per_line: MyString
+  currency: MyString
+  worker_id: 1
+  threads: 1
+
+two:
+  status: 1
+  simulations_count: 1
+  eta: MyString
+  report: MyText
+  config: MyString
+  config_json: MyText
+  benchmark_version: MyString
+  report_table: false
+  report_distribution: false
+  report_graph: false
+  report_w1: false
+  report_dragons: false
+  progress: 1.5
+  line_count: MyString
+  bet_per_line: MyString
+  currency: MyString
+  worker_id: 1
+  threads: 1
