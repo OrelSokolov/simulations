@@ -14,5 +14,6 @@
  *= require_self
  */
 
-@import "bootstrap/css/bootstrap-grid";
-@import "bootstrap/css/bootstrap";
+@import "bootstrap/dist/css/bootstrap-grid";
+@import "bootstrap/dist/css/bootstrap";
+@import "bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css";

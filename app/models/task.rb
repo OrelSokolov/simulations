@@ -3,9 +3,7 @@ class Task < ApplicationRecord
                         :report_table, :report_distribution, :report_graph, :report_w1, :report_dragons, :progress,
                         :line_count, :bet_per_line, :currency, :worker_id, :threads
 
-  def self.todo
-    where(status: 0)
-  end
+  scope :todo, -> { where(status: 0) }
 
   def outdated?
     self.progress && ( Time.now - (self.updated_at || Time.unix(0)) > 1.hour )
