@@ -2,36 +2,9 @@
 
 <h1>Tasks</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th>Simulations count</th>
-      <th>Eta</th>
-      <th>Report</th>
-      <th>Config</th>
-      <th>Config json</th>
-      <th>Benchmark version</th>
-      <th>Report table</th>
-      <th>Report distribution</th>
-      <th>Report graph</th>
-      <th>Report w1</th>
-      <th>Report dragons</th>
-      <th>Progress</th>
-      <th>Line count</th>
-      <th>Bet per line</th>
-      <th>Currency</th>
-      <th>Worker</th>
-      <th>Threads</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tasks.each do |task| %>
-    <% end %>
-  </tbody>
-</table>
+<% @tasks.each do |task| %>
+  <%= render partial: 'show', locals: { task: task } %>
+<% end %>
 
 <br>
 
