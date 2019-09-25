@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  validates_presence_of :config_json
   # validates_presence_of :status, :simulations_count, :eta, :config, :config_json, :benchmark_version,
   #                       :report_table, :report_distribution, :report_graph, :report_w1, :report_dragons, :progress,
   #                       :line_count, :bet_per_line, :currency, :threads
@@ -14,6 +15,12 @@ class Task < ApplicationRecord
         threads: 20
     }
     super(attrs)
+  end
+
+  def report_s
+    r = report&.gsub("\n", "<br/>")
+    r = r&.gsub(" ", "&nbsp;")
+    r
   end
 
   def outdated?
@@ -54,9 +61,8 @@ class Task < ApplicationRecord
   end
 
   def eta_s
-    i = self.eta.try &.to_f.to_i || 0
-    span = i.seconds
-    "#{span.hours}h #{span.minutes}m #{span.seconds}s"
+    span = Time.at(self.eta.to_i)
+    "#{span.hour}h #{span.min}m #{span.sec}s"
   end
   #
   # def todo?

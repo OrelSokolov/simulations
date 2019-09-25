@@ -1,6 +1,8 @@
 class TasksController < ApplicationController
 
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:new_task_for_worker, :update_task]
+  skip_before_action :verify_authenticity_token, only: [:new_task_for_worker, :update_task]
 
   # GET /tasks
   # GET /tasks.json
@@ -72,10 +74,69 @@ class TasksController < ApplicationController
     end
   end
 
+  def new_task_for_worker
+    if validate_token
+      response.content_type = "application/json"
+      worker = Worker.find_by(name: pick_params[:worker])
+      if worker.nil?
+        worker = Worker.create!(name: pick_params[:worker])
+      end
+      tasks = Task.where("(worker_id IS NULL OR worker_id = #{worker.id}) AND status = 0").limit("1")
+      if tasks.length > 0
+        task = tasks.first
+        task.update!(worker_id: (worker.id || 0))
+        task.save
+        render json: task.to_json
+      else
+        render json: "null"
+      end
+    else
+      render json: { error: "Token invalid" }.to_json
+    end
+  end
+
+  def update_task
+    if validate_token
+      task = Task.find(update_params[:id])
+      puts task
+      task && task.update!(update_params)
+        render json: task.to_json
+    else
+        render json: { error: "Forbidden" }
+    end
+  end
+
+  def retry
+    new_task = task.dup
+    new_task.created_at = Time.now
+    new_task.updated_at = Time.now
+    new_task.id = nil
+    new_task.status = 0
+    new_task.worker_id = nil
+    if new_task.save
+      redirect_to action: :index, flash: {"success" => "Created task successfully."}
+    else
+      flash[:danger] = "Could not create Task!"
+      render "new.slang"
+    end
+  end
+
   private
+    def validate_token
+      params.permit(:token, :worker) && params.has_key?(:token) && params[:token] == "booming-games"
+    end
+
+  def update_params
+    params.require(:task).permit(:id, :progress, :status, :report, :eta, :token, :task)
+  end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
+    end
+
+    def pick_params
+      params.permit(:worker, :token)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
