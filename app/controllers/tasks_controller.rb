@@ -6,6 +6,16 @@ class TasksController < ApplicationController
   # GET /tasks.json
   def index
     @tasks = Task.all
+    @tasks_todo = Task.todo
+    @tasks_progress = Task.in_progress.order(progress: :desc)
+    @tasks_done = Task.done.order(updated_at: :desc)
+    @done_today = @tasks_done.select{|t| t.changed_today? }
+    @done_yesterday = @tasks_done.select{|t| t.changed_yesterday? }
+    @done_this_week = @tasks_done.select{|t| t.changed_this_week? }
+    @done_ago = @tasks_done.select{|t| t.changed_ago? }
+    @tasks_failed = @tasks.select{|t| t.failed?}.sort_by{|t| t.updated_at || Time.unix(0) }.reverse
+
+    @tasks = Task.all
   end
 
   # GET /tasks/1
@@ -29,7 +39,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
+        format.html { redirect_to tasks_url, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }

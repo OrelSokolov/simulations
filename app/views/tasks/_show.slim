@@ -56,14 +56,14 @@ br
           br
           span #{task.updated_at}
         br
-          - if task.todo?
-            == link_to("Edit", "/tasks/#{task.id}/edit", class: "btn btn-success btn-block")
+        - if task.todo?
+          == link_to("Edit", edit_task_path(task), class: "btn btn-success btn-block")
         br
-          - if task.done? || task.outdated? || task.failed?
-            == link_to("Delete", "/tasks/#{ task.id }?_csrf=#{csrf_token}", "data-method": "delete", "data-confirm": "Are you sure?", class: "btn btn-danger btn-block")
+        - if task.done? || task.outdated? || task.failed?
+          == link_to("Delete", task_path(task), "data-method": "delete", "data-confirm": "Are you sure?", class: "btn btn-danger btn-block")
         br
-          - if task.report_available?
-            a class="btn btn-primary btn-block" data-toggle="collapse" href="#report-#{task.id}" role="button" aria-expanded="false" aria-controls="report-#{task.id}" View report
+        - if task.report_available?
+          a class="btn btn-primary btn-block" data-toggle="collapse" href="#report-#{task.id}" role="button" aria-expanded="false" aria-controls="report-#{task.id}" View report
 
   - if task.in_progress?
     div class="progress"

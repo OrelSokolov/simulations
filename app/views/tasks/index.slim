@@ -1,0 +1,60 @@
+.row
+  .col-sm-11
+    h2 Tasks
+  .col-sm-1
+    a.btn.btn-success.btn-sm href="/tasks/new" New
+
+ul#myTab.nav.nav-tabs role="tablist"
+  li.nav-item
+    a#home-tab.nav-link.active data-toggle="tab" href="#home" aria-controls="todo" tole="tab"
+      span ToDo
+      .badge.badge-secondary
+        == @tasks.count{|t| t.todo?}
+  li.nav-item
+    a#inprogress-tab.nav-link data-toggle="tab" href="#inprogress" aria-controls="inprogress" role="tab"
+      span In Progress
+      .badge.badge-warning
+        == @tasks.count{|t| t.in_progress?}
+  li.nav-item
+    a#done-tab.nav-link data-toggle="tab" href="#done" aria-controls="done" role="tab"
+      span Done
+      .badge.badge-success
+        == @tasks.count{|t| t.done?}
+  li.nav-item
+    a#failed-tab.nav-link data-toggle="tab" href="#failed" aria-controls="failed" role="tab"
+      span Failed
+      .badge.badge-danger
+        == @tasks.count{|t| t.failed?}
+
+#myTabContent.tab-content
+  #home.tab-pane.show.active
+    - @tasks_todo.each do |task|
+      == render(partial: "show", locals: { task: task })
+  #inprogress.tab-pane.fade
+    - @tasks_progress.each do |task|
+      == render(partial: "show", locals: { task: task })
+  #done.tab-pane
+    - unless @done_today.size.zero?
+      .h2 Today
+    - @done_today.each do |task|
+      == render(partial: "show", locals: { task: task })
+      hr
+    - unless @done_yesterday.size.zero?
+      .h2 Yesterday
+    - @done_yesterday.each do |task|
+      == render(partial: "show", locals: { task: task })
+      hr
+    - unless @done_this_week.size.zero?
+      .h2 This week
+    - @done_this_week.each do |task|
+      == render(partial: "show", locals: { task: task })
+      hr
+    - unless @done_ago.size.zero?
+      .h2 Long time ago
+    - @done_ago.each do |task|
+      == render(partial: "show", locals: { task: task })
+      hr
+
+  #failed.tab-pane
+    - @tasks_failed.each do |task|
+      == render(partial: "show", locals: { task: task })

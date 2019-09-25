@@ -13,24 +13,24 @@
 ActiveRecord::Schema.define(version: 2019_09_25_121027) do
 
   create_table "tasks", force: :cascade do |t|
-    t.integer "status"
-    t.integer "simulations_count"
-    t.string "eta"
-    t.text "report"
-    t.string "config"
-    t.text "config_json"
-    t.string "benchmark_version"
-    t.boolean "report_table"
-    t.boolean "report_distribution"
-    t.boolean "report_graph"
-    t.boolean "report_w1"
-    t.boolean "report_dragons"
-    t.float "progress"
-    t.string "line_count"
-    t.string "bet_per_line"
-    t.string "currency"
+    t.integer "status", default: 0, null: false
+    t.integer "simulations_count", default: 0, null: false
+    t.string "eta", default: "0", null: false
+    t.text "report", default: "", null: false
+    t.string "config", default: "", null: false
+    t.text "config_json", default: "", null: false
+    t.string "benchmark_version", default: "", null: false
+    t.boolean "report_table", default: false, null: false
+    t.boolean "report_distribution", default: false, null: false
+    t.boolean "report_graph", default: false, null: false
+    t.boolean "report_w1", default: false, null: false
+    t.boolean "report_dragons", default: false, null: false
+    t.float "progress", default: 0.0, null: false
+    t.string "line_count", default: "1", null: false
+    t.string "bet_per_line", default: "1", null: false
+    t.string "currency", default: "EUR", null: false
     t.integer "worker_id"
-    t.integer "threads"
+    t.integer "threads", default: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

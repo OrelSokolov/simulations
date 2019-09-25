@@ -1,50 +1,54 @@
-- if task.errors
-  ul.errors
-    - task.errors.each do |error|
-      li = error.to_s
+- if task.errors.any?
+  div id="error_explanation"
+    h2
+      = pluralize(task.errors.count, "error")
+    ul>
+      - task.errors.full_messages.each do |message|
+        li
+          = message
 
 == form_with(model: task, local: true) do |form|
   .row
     .col
       .form-group
         label Task name
-        == text_field_tag(:config, task.config, placeholder: "Config name", class: "form-control", required: true)
+        == text_field(:task, :config, value: task.config, placeholder: "Config name", class: "form-control", required: true)
       .form-group
         label Requried benchmark version
-        == text_field_tag(:benchmark_version, task.benchmark_version, placeholder: "Required benchmark version", class: "form-control", required: true)
+        == text_field(:task, :benchmark_version, value: task.benchmark_version, placeholder: "Required benchmark version", class: "form-control", required: true)
       .form-group
         label Simulations count
-        select.custom-select name="simulations_count"
+        select.custom-select name="task[simulations_count]"
           option value="5000" 100K
           option value="50000" selected=true 1M
           option value="500000" 10M
           option value="5000000" 100M
       .form-group
         label Config JSON
-        == text_area_tag(:config_json, task.config_json, placeholder: "JSON config content", class: "form-control", size: "30x10", required: true)
+        == text_area(:task, :config_json, value: task.config_json, placeholder: "JSON config content", class: "form-control", size: "30x10", required: true)
 
     .col
       .form-group
         == label_tag(:report_table)
-        == check_box_tag(:report_table, checked: task.report_table)
+        == check_box(:task, :report_table, checked: task.report_table)
       .form-group
         == label_tag(:report_distribution)
-        == check_box_tag(:report_distribution, checked: task.report_distribution)
+        == check_box(:task, :report_distribution, checked: task.report_distribution)
       .form-group
         == label_tag(:report_graph)
-        == check_box(:report_graph, checked: task.report_graph)
+        == check_box(:task, :report_graph, checked: task.report_graph)
       .form-group
         == label_tag(:report_w1)
-        == check_box(:report_w1, checked: task.report_w1)
+        == check_box(:task, :report_w1, checked: task.report_w1)
       .form-group
         == label_tag(:report_dragons)
-        == check_box(:report_dragons, checked: task.report_dragons)
+        == check_box(:task, :report_dragons, checked: task.report_dragons)
       .form-group
-        == text_field_tag("line_count", task.line_count, placeholder: "Line count", class: "form-control", required: "required")
+        == text_field(:task, "line_count", value: task.line_count, placeholder: "Line count", class: "form-control", required: "required")
       .form-group
-        == text_field_tag("bet_per_line", task.bet_per_line, placeholder: "Bet per line", class: "form-control", required: "required")
+        == text_field(:task, "bet_per_line", value: task.bet_per_line, placeholder: "Bet per line", class: "form-control", required: "required")
       .form-group
-        == text_field_tag("currency", task.currency, placeholder: "Currency", class: "form-control", required: "required")
+        == text_field(:task, "currency", value: (task.currency || "EUR"), placeholder: "Currency", class: "form-control", required: "required")
   .float-right
     == submit_tag("Submit", class: "btn btn-success btn-lg")
     == link_to("Back", "/tasks", class: "btn btn-light btn-lg")
