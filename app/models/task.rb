@@ -50,7 +50,7 @@ class Task < ApplicationRecord
   end
 
   def eta_s
-    span = Time.at(self.eta.to_i)
+    span = Time.at(self.eta.to_i).utc
     "#{span.hour}h #{span.min}m #{span.sec}s"
   end
   #
