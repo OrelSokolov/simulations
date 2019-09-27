@@ -18,3 +18,15 @@
 @import "bootstrap/dist/css/bootstrap";
 @import "bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css";
 
+
+.table tr.active {
+  background: #c8f5c8;
+}
+
+.table tr.paused {
+  background: #fff0f2;
+}
+
+.table tr.waiting {
+  background: #fff8bb;
+}

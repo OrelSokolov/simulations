@@ -86,6 +86,8 @@ class TasksController < ApplicationController
       worker = Worker.find_by(name: pick_params[:worker])
       if worker.nil?
         worker = Worker.create!(name: pick_params[:worker])
+      else
+        worker.touch
       end
       tasks = Task.where("(worker_id IS NULL OR worker_id = #{worker.id}) AND status = 0").limit("1")
       if tasks.length > 0
@@ -104,6 +106,7 @@ class TasksController < ApplicationController
   def update_task
     if validate_token
       task = Task.find(update_params[:id])
+      Worker.find_by(id: task.worker_id).try(:touch)
       puts task
       task && task.update!(update_params)
         render json: task.to_json
