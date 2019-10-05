@@ -87,7 +87,12 @@ class TasksController < ApplicationController
       if worker.nil?
         worker = Worker.create!(name: pick_params[:worker])
       else
-        worker.touch
+        if worker.blocked
+          render json: "null"
+          return
+        else
+          worker.touch
+        end
       end
       tasks = Task.where("(worker_id IS NULL OR worker_id = #{worker.id}) AND status = 0").limit("1")
       if tasks.length > 0
@@ -131,9 +136,10 @@ class TasksController < ApplicationController
   end
 
   private
-    def validate_token
-      params.permit(:token, :worker) && params.has_key?(:token) && params[:token] == "booming-games"
-    end
+
+  def validate_token
+    params.permit(:token, :worker) && params.has_key?(:token) && params[:token] == "booming-games"
+  end
 
   def update_params
     params.require(:task).permit(:id, :progress, :status, :report, :eta, :token, :task)

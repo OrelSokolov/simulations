@@ -14,10 +14,16 @@
   <tbody>
     <% @workers.each do |worker| %>
       <tr class="<%= worker.state %>">
-        <td><%= worker.name %></td>
+        <td>
+          <%= worker.name %>
+          <%- if worker.blocked %>
+            <span class="badge badge-danger">BLOCKED</span>
+          <% end %>
+        </td>
         <td><%= worker.updated_at %></td>
         <td>
-          <% if worker.dead? %>
+          <%= link_to 'Edit', edit_worker_path(worker), class: 'btn btn-warning' %>
+          <% unless worker.active? %>
             <%= link_to 'Destroy', worker, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           <% end %>
         </td>
