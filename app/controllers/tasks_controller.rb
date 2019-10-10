@@ -121,17 +121,17 @@ class TasksController < ApplicationController
   end
 
   def retry
-    new_task = task.dup
+    new_task = Task.find(params[:task_id]).dup
     new_task.created_at = Time.now
     new_task.updated_at = Time.now
     new_task.id = nil
     new_task.status = 0
     new_task.worker_id = nil
     if new_task.save
-      redirect_to action: :index, flash: {"success" => "Created task successfully."}
+      redirect_to action: :index
     else
       flash[:danger] = "Could not create Task!"
-      render "new.slang"
+      render :new
     end
   end
 

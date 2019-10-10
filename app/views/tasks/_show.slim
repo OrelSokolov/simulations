@@ -64,6 +64,9 @@ br
         br
         - if task.report_available?
           a class="btn btn-primary btn-block" data-toggle="collapse" href="#report-#{task.id}" role="button" aria-expanded="false" aria-controls="report-#{task.id}" View report
+        br
+        - if task.done? || task.outdated? || task.failed?
+          == link_to("Retry", task_retry_path(task), class: "btn btn-primary btn-block")
 
   - if task.in_progress?
     div class="progress"
