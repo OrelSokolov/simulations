@@ -85,7 +85,7 @@ class TasksController < ApplicationController
       response.content_type = "application/json"
       worker = Worker.find_by(name: pick_params[:worker])
       if worker.nil?
-        worker = Worker.create!(name: pick_params[:worker])
+        worker = Worker.create!(name: pick_params[:worker], worker_version: params[:worker_version])
       else
         if worker.blocked
           render json: "null"
@@ -151,7 +151,7 @@ class TasksController < ApplicationController
     end
 
     def pick_params
-      params.permit(:worker, :token)
+      params.permit(:worker, :token, :worker_version)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

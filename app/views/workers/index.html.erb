@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Version</th>
       <th>Last used</th>
       <th colspan="3"></th>
     </tr>
@@ -22,6 +23,7 @@
             <span class="badge badge-danger">BLOCKED</span>
           <% end %>
         </td>
+        <td><%= worker.worker_version %></td>
         <td><%= worker.updated_at %></td>
         <td>
           <%= link_to 'Edit', edit_worker_path(worker), class: 'btn btn-warning' %>
