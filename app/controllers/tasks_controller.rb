@@ -87,11 +87,10 @@ class TasksController < ApplicationController
       if worker.nil?
         worker = Worker.create!(name: pick_params[:worker], worker_version: params[:worker_version])
       else
+        worker.update(worker_version: params[:worker_version])
         if worker.blocked
           render json: "null"
           return
-        else
-          worker.touch
         end
       end
       tasks = Task.where("(worker_id IS NULL OR worker_id = #{worker.id}) AND status = 0").limit("1")
