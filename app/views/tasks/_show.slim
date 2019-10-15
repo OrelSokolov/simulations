@@ -5,7 +5,7 @@ br
       .col-md-5
         h5.card-title
           == task.config
-          == task.simulations_s
+          '
           - if task.todo?
             span class="badge badge-info" TODO
           - if task.in_progress?
@@ -15,8 +15,7 @@ br
           - if task.done?
             span class="badge badge-success" DONE
 
-        h6.card-subtitle.mb-2.text-muted Benchmark version: #{task.benchmark_version}
-
+        h5.card-subtitle.mb-2.text-muted == task.simulations_s
         div.card-text
           strong Reports:
           ul
