@@ -4,7 +4,7 @@ br
     .row
       .col-md-5
         h5.card-title
-          == task.config
+          == link_to task.config, task_path(task)
           '
           - if task.todo?
             span class="badge badge-info" TODO
