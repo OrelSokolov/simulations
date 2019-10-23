@@ -76,6 +76,6 @@ br
       div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=task.progress aria-valuemin="0" aria-valuemax="100" style="width: #{task.progress}%" ETA #{task.eta_s}
 
   - if task.report_available?
-    .collapse id="report-#{task.id}"
+    .collapse id="report-#{task.id}" class="#{"show" if show_report}"
       .jumbotron style="font-family: monospace"
         == task.report_s

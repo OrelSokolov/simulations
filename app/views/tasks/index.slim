@@ -29,32 +29,32 @@ ul#myTab.nav.nav-tabs role="tablist"
 #myTabContent.tab-content
   #home.tab-pane.show.active
     - @tasks_todo.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false })
   #inprogress.tab-pane.fade
     - @tasks_progress.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
   #done.tab-pane
     - unless @done_today.size.zero?
       .h2 Today
     - @done_today.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
       hr
     - unless @done_yesterday.size.zero?
       .h2 Yesterday
     - @done_yesterday.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
       hr
     - unless @done_this_week.size.zero?
       .h2 This week
     - @done_this_week.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
       hr
     - unless @done_ago.size.zero?
       .h2 Long time ago
     - @done_ago.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
       hr
 
   #failed.tab-pane
     - @tasks_failed.each do |task|
-      == render(partial: "show", locals: { task: task })
+      == render(partial: "show", locals: { task: task, show_report: false  })
