@@ -14,9 +14,6 @@
         label Task name
         == text_field(:task, :config, value: task.config, placeholder: "Config name", class: "form-control", required: true)
       .form-group
-        label Requried benchmark version
-        == text_field(:task, :benchmark_version, value: task.benchmark_version, placeholder: "Required benchmark version", class: "form-control", required: true)
-      .form-group
         label Simulations count
         select.custom-select name="task[simulations_count]"
           option value="5000" 100K

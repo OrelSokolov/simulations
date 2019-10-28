@@ -16,6 +16,14 @@ class Task < ApplicationRecord
     self.progress && ( Time.now - (self.updated_at || Time.unix(0)) > 1.hour )
   end
 
+  def created_at_s
+    created_at.strftime("%H:%M, %B %e")
+  end
+
+  def updated_at_s
+    updated_at.strftime("%H:%M, %B %e")
+  end
+
   def changed_at
     self.updated_at || Time.unix(0)
   end

@@ -28,7 +28,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new({
-        benchmark_version: "Any",
+        benchmark_version: "",
         status: :todo,
         report_table: true,
         report_distribution: true,
@@ -97,6 +97,7 @@ class TasksController < ApplicationController
       if tasks.length > 0
         task = tasks.first
         task.update!(worker_id: (worker.id || 0))
+        task.update!(benchmark_version: (worker.worker_version || ""))
         task.save
         render json: task.to_json
       else

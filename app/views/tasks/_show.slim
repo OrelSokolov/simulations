@@ -48,17 +48,20 @@ br
       .col-md-3
         div
           strong Created at
-          br
-          span #{task.created_at}
+          ':
+          span #{task.created_at_s}
         div
           strong Updated at
-          br
-          span #{task.updated_at}
+          ':
+          span #{task.updated_at_s}
         div
           strong Worker id
-          br
+          ':
           span #{task.worker_id}
-        br
+        div
+          strong Worker Version
+          ':
+          span #{task.benchmark_version}
         - if task.todo?
           == link_to("Edit", edit_task_path(task), class: "btn btn-success btn-block")
         br
