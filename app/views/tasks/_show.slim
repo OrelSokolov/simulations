@@ -34,15 +34,19 @@ br
         ul
           li
             strong Currency:
+            '
             = task.currency
             li
               strong Bet per line:
+              '
               = task.bet_per_line
             li
               strong Lines:
+              '
               = task.line_count
             li
               strong Threads:
+              '
               = task.threads
 
       .col-md-3
@@ -55,7 +59,7 @@ br
           ':
           span #{task.updated_at_s}
         div
-          strong Worker id
+          strong Worker
           ':
           span #{task.worker_id}
         div
