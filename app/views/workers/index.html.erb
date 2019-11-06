@@ -24,7 +24,7 @@
           <% end %>
         </td>
         <td><%= worker.worker_version %></td>
-        <td><%= worker.updated_at %></td>
+        <td><%= time_ago_in_words worker.updated_at %> ago</td>
         <td>
           <%= link_to 'Edit', edit_worker_path(worker), class: 'btn btn-warning' %>
           <% unless worker.active? %>
