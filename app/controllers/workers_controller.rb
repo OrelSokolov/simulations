@@ -4,7 +4,7 @@ class WorkersController < ApplicationController
   # GET /workers
   # GET /workers.json
   def index
-    @workers = Worker.all
+    @workers = Worker.all.order(updated_at: :desc)
   end
 
   # GET /workers/1
