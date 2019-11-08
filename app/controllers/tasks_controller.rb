@@ -85,7 +85,7 @@ class TasksController < ApplicationController
       response.content_type = "application/json"
       worker = Worker.find_by(name: pick_params[:worker])
       if worker.nil?
-        worker = Worker.create!(pick_params)
+        worker = Worker.create!(worker_params)
       else
         worker.update(worker_version: pick_params[:worker_version], engine_version: pick_params[:engine_version])
         if worker.blocked
@@ -152,6 +152,14 @@ class TasksController < ApplicationController
 
     def pick_params
       params.permit(:worker, :token, :worker_version, :engine_version)
+    end
+
+    def worker_params
+      {
+          name: pick_params[:worker],
+          worker_version: pick_params[:worker_version],
+          engine_version: pick_params[:engine_version]
+      }
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
