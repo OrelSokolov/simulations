@@ -98,6 +98,7 @@ class TasksController < ApplicationController
         task = tasks.first
         task.update!(worker_id: (worker.id || 0))
         task.update!(benchmark_version: (worker.worker_version || ""))
+        task.update!(engine_version: (worker.engine_version || ""))
         task.save
         render json: task.to_json
       else
