@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_08_095510) do
+ActiveRecord::Schema.define(version: 2019_11_08_100938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2019_11_08_095510) do
     t.integer "threads", default: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "engine_version"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,7 +57,7 @@ ActiveRecord::Schema.define(version: 2019_11_08_095510) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "blocked", default: false
     t.string "worker_version"
-    t.string "engine_string"
+    t.string "engine_version"
   end
 
 end
