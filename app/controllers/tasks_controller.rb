@@ -87,6 +87,7 @@ class TasksController < ApplicationController
       if worker.nil?
         worker = Worker.create!(worker_params)
       else
+        worker.touch
         worker.update(worker_version: pick_params[:worker_version], engine_version: pick_params[:engine_version])
         if worker.blocked
           render json: "null"
