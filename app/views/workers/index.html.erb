@@ -23,6 +23,9 @@
           <%- if worker.blocked %>
             <span class="badge badge-danger">BLOCKED</span>
           <% end %>
+          <%- if worker.busy %>
+            <span class="badge badge-warning">BUSY</span>
+          <% end %>
         </td>
         <td><%= worker.worker_version %></td>
         <td><%= worker.engine_version %></td>

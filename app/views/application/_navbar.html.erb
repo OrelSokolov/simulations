@@ -10,7 +10,7 @@
         <%= link_to 'Tasks', tasks_path, class: 'nav-link' %>
       </li>
       <li class="nav-item">
-        <%= link_to 'Workers', workers_path, class: 'nav-link' %>
+        <%= link_to "Workers #{@free_workers} / #{@active_workers}", workers_path, class: 'nav-link' %>
       </li>
     </ul>
   </div>

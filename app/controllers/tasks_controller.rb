@@ -103,6 +103,7 @@ class TasksController < ApplicationController
         task.save
         render json: task.to_json
       else
+        worker.update(busy: false)
         render json: "null"
       end
     else
@@ -113,7 +114,9 @@ class TasksController < ApplicationController
   def update_task
     if validate_token
       task = Task.find(update_params[:id])
-      Worker.find_by(id: task.worker_id).try(:touch)
+      worker = Worker.find_by(id: task.worker_id)
+      worker.try(:touch)
+      worker.update(busy: true)
       puts task
       task && task.update!(update_params)
         render json: task.to_json
