@@ -10,17 +10,15 @@ class Worker < ApplicationRecord
     (Time.now - updated_at) < 1.minutes
   end
 
-  def dead?
-    (Time.now - updated_at) > 5.days
-  end
-
   def state
     if active?
-        "active"
-     elsif dead?
-        "dead"
-     else
-        "waiting"
-     end
+       if busy
+         "waiting"
+       else
+         "active"
+       end
+    else
+      "dead"
+    end
   end
 end
