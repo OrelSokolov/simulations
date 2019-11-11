@@ -1,7 +1,10 @@
 class Worker < ApplicationRecord
-  scope :active, -> { where("DATE_PART('minute', NOW()) - DATE_PART('minute', updated_at) < 1 AND blocked != true") }
-  scope :busy,   -> { where("DATE_PART('minute', NOW()) - DATE_PART('minute', updated_at) < 1 AND busy == TRUE AND blocked != true") }
-  scope :available,   -> { where("DATE_PART('minute', NOW()) - DATE_PART('minute', updated_at) < 1 AND busy != TRUE AND blocked != true") }
+  scope :recent, -> { where("updated_at > now() - '1 minute'::interval") }
+  scope :not_blocked, -> { where("blocked != true") }
+
+  scope :active, -> { recent.not_blocked }
+  scope :busy,   -> { recent.not_blocked.where("busy == TRUE") }
+  scope :available,   -> { recent.not_blocked.where("busy != TRUE") }
 
   def active?
     (Time.now - updated_at) < 1.minutes
