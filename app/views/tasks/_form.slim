@@ -41,6 +41,9 @@
         == label_tag(:report_dragons)
         == check_box(:task, :report_dragons, checked: task.report_dragons)
       .form-group
+        == label_tag(:config_validation)
+        == check_box(:task, :config_validation, checked: task.config_validation)
+      .form-group
         == text_field(:task, "line_count", value: task.line_count, placeholder: "Line count", class: "form-control", required: "required")
       .form-group
         == text_field(:task, "bet_per_line", value: task.bet_per_line, placeholder: "Bet per line", class: "form-control", required: "required")
