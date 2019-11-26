@@ -1,0 +1,40 @@
+image: docker:latest
+
+stages:
+  - build
+  - push
+  - clean
+
+build:
+  stage: build
+  script:
+    - docker build --build-arg --build-arg VCS_REF=${CI_COMMIT_SHA} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} .
+
+push:
+  stage: push
+  only:
+    - tags
+    - ^\d+\.\d+.\d+-\d+$
+  script:
+    - "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+    - "docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+    - "docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} ${CI_REGISTRY_IMAGE}:latest"
+    - "docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+    - "docker push ${CI_REGISTRY_IMAGE}:latest"
+
+clean:
+  stage: clean
+  script:
+    - docker rmi ${CI_REGISTRY_IMAGE}:${CI_COMIT_SHA} || true
+  when: always
+
+clean-push:
+  stage: clean
+  only:
+    - tags
+    - ^\d+\.\d+.\d+-\d+$
+  script:
+    - "docker rmi ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG} || true"
+    - "docker rmi ${CI_REGISTRY_IMAGE}:latest || true"
+  when: always
+
