@@ -8,7 +8,7 @@ stages:
 build:
   stage: build
   script:
-    - docker build --build-arg --build-arg VCS_REF=${CI_COMMIT_SHA} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} .
+    - docker build --build-arg VCS_REF=${CI_COMMIT_SHA} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} .
 
 push:
   stage: push
