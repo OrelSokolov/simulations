@@ -13,6 +13,7 @@ RUN apt install yarn
 COPY . /application
 WORKDIR /application
 RUN bundle install 
+RUN bundle exec rake assets:precompile
 
 ENTRYPOINT ./entrypoint.sh
 
