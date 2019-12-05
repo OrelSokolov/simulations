@@ -19,6 +19,11 @@ ul#myTab.nav.nav-tabs role="tablist"
       .badge.badge-warning
         == @tasks.count{|t| t.in_progress?}
   li.nav-item
+    a#canceled-tab.nav-link data-toggle="tab" href="#canceled" aria-controls="canceled" role="tab"
+      span Canceled
+      .badge.badge-warning
+        == @tasks.count { |t| t.canceled? }
+  li.nav-item
     a#done-tab.nav-link data-toggle="tab" href="#done" aria-controls="done" role="tab"
       span Done
       .badge.badge-success
@@ -33,9 +38,15 @@ ul#myTab.nav.nav-tabs role="tablist"
   #home.tab-pane.show.active
     - @tasks_todo.each do |task|
       == render(partial: "show", locals: { task: task, show_report: false })
+
+  #canceled.tab-pane.fade
+    - @tasks_canceled.each do |task|
+      == render(partial: "show", locals: {task: task, show_report: false})
+
   #inprogress.tab-pane.fade
     - @tasks_progress.each do |task|
       == render(partial: "show", locals: { task: task, show_report: false  })
+
   #done.tab-pane
     - unless @done_today.size.zero?
       .h2 Today

@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
 
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:new_task_for_worker, :update_task]
-  skip_before_action :verify_authenticity_token, only: [:new_task_for_worker, :update_task]
+  skip_before_action :authenticate_user!, only: [:new_task_for_worker, :update_task, :canceled]
+  skip_before_action :verify_authenticity_token, only: [:new_task_for_worker, :update_task, :canceled]
 
   # GET /tasks
   # GET /tasks.json
@@ -10,6 +10,7 @@ class TasksController < ApplicationController
     @tasks = Task.all
     @tasks_todo = Task.todo
     @tasks_progress = Task.in_progress.order(progress: :desc)
+    @tasks_canceled = Task.canceled.order(updated_at: :desc)
     @tasks_done = Task.done.order(updated_at: :desc)
     @done_today = @tasks_done.select{|t| t.changed_today? }
     @done_yesterday = @tasks_done.select{|t| t.changed_yesterday? }
@@ -18,6 +19,10 @@ class TasksController < ApplicationController
     @tasks_failed = @tasks.select{|t| t.failed?}.sort_by{|t| t.updated_at || Time.unix(0) }.reverse
 
     @tasks = Task.all
+  end
+
+  def canceled
+    render json: @tasks_canceled = Task.canceled.ids.to_json
   end
 
   # GET /tasks/1
@@ -111,6 +116,10 @@ class TasksController < ApplicationController
     end
   end
 
+  def prevent_progress_on_canceled(task, update_params)
+    !(task.canceled? && update_params[:status] != Task.statuses[:failed])
+  end
+
   def update_task
     if validate_token
       task = Task.find(update_params[:id])
@@ -118,8 +127,8 @@ class TasksController < ApplicationController
       worker.try(:touch)
       worker.update(busy: true)
       puts task
-      task && task.update!(update_params)
-        render json: task.to_json
+      task && prevent_progress_on_canceled(task, update_params) && task.update!(update_params)
+      render json: task.to_json
     else
         render json: { error: "Forbidden" }
     end
@@ -138,6 +147,12 @@ class TasksController < ApplicationController
       flash[:danger] = "Could not create Task!"
       render :new
     end
+  end
+
+  def cancel
+    set_task
+    @task.canceled!
+    redirect_to :tasks
   end
 
   private

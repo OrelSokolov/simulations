@@ -79,6 +79,11 @@ br
         br
         - if task.done? || task.outdated? || task.failed?
           == link_to("Delete", task_path(task), "data-method": "delete", "data-confirm": "Are you sure?", class: "btn btn-danger btn-block")
+
+        br
+        - if task.in_progress?
+          == link_to("Cancel", cancel_task_path(task), "data-method": "post", "data-confirm": "Are you sure?", class: "btn btn-danger btn-block")
+
         br
         - if task.report_available?
           a class="btn btn-primary btn-block" data-toggle="collapse" href="#report-#{task.id}" role="button" aria-expanded="false" aria-controls="report-#{task.id}" View report
@@ -86,7 +91,7 @@ br
         - if task.done? || task.outdated? || task.failed?
           == link_to("Retry", task_retry_path(task), class: "btn btn-primary btn-block")
 
-  - if task.in_progress?
+  - if task.in_progress? || task.canceled?
     div class="progress"
       div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=task.progress aria-valuemin="0" aria-valuemax="100" style="width: #{task.progress}%" ETA #{task.eta_s}
 

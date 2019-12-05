@@ -23,12 +23,3 @@ test:
   <<: *default
   database: sims_test
 
-production:
-  <<: *default
-  database: sims
-  adapter: postgresql
-  host: <%= ENV.fetch('DATABASE_HOST') %>
-  port: <%= ENV.fetch('DATABASE_PORT') %>
-  username: <%= ENV.fetch('DATABASE_USERNAME') %>
-  password: <%= ENV.fetch('DATABASE_PASSWORD') %>
-

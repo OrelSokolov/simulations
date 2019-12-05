@@ -4,7 +4,7 @@ class Task < ApplicationRecord
   #                       :report_table, :report_distribution, :report_graph, :report_w1, :report_dragons, :progress,
   #                       :line_count, :bet_per_line, :currency, :threads
 
-  enum status: [:todo, :in_progress, :done, :failed]
+  enum status: [:todo, :in_progress, :done, :failed, :canceled]
 
   def report_s
     r = report&.gsub("\n", "<br/>")
