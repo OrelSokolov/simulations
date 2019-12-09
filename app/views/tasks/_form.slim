@@ -25,24 +25,9 @@
         == text_area(:task, :config_json, value: task.config_json, placeholder: "JSON config content", class: "form-control", size: "30x10", required: true)
 
     .col
-      .form-group
-        == label_tag(:report_table)
-        == check_box(:task, :report_table, checked: task.report_table)
-      .form-group
-        == label_tag(:report_distribution)
-        == check_box(:task, :report_distribution, checked: task.report_distribution)
-      .form-group
-        == label_tag(:report_graph)
-        == check_box(:task, :report_graph, checked: task.report_graph)
-      .form-group
-        == label_tag(:report_w1)
-        == check_box(:task, :report_w1, checked: task.report_w1)
-      .form-group
-        == label_tag(:report_dragons)
-        == check_box(:task, :report_dragons, checked: task.report_dragons)
-      .form-group
-        == label_tag(:config_validation)
-        == check_box(:task, :config_validation, checked: task.config_validation)
+      - %i|report_table report_distribution report_graph report_w1 report_dragons config_validation|.each do |field|
+        .form-group
+          == task_checkbox(task, field)
       .form-group
         == text_field(:task, "line_count", value: task.line_count, placeholder: "Line count", class: "form-control", required: "required")
       .form-group
