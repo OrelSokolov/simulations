@@ -23,6 +23,7 @@ test:
   <<: *default
   database: sims_test
 
+<% if Rails.env.production? %>
 production:
   <<: *default
   database: sims
@@ -32,3 +33,4 @@ production:
   username: <%= ENV.fetch('DATABASE_USERNAME') %>
   password: <%= ENV.fetch('DATABASE_PASSWORD') %>
 
+<% end %>
