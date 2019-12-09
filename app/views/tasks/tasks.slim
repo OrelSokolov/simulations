@@ -1,0 +1,40 @@
+p id="notice"
+  = notice
+
+.row
+  .col-sm-11
+    h2 Tasks
+  .col-sm-1
+    a.btn.btn-success.btn-sm href="/tasks/new" New
+
+ul#myTab.nav.nav-tabs role="tablist"
+  li.nav-item
+    a#home-tab.nav-link href="/tasks/todo" class="#{'active' if action_name == 'todo'}"
+      span ToDo
+      .badge.badge-secondary
+        == @tasks.todo.count
+  li.nav-item
+    a#inprogress-tab.nav-link href="/tasks/in_progress" class="#{'active' if action_name == 'in_progress'}"
+      span In Progress
+      .badge.badge-warning
+        == @tasks.in_progress.count
+  - if @tasks.canceled.count.positive?
+    li.nav-item
+      a#canceled-tab.nav-link href="/tasks/canceled" class="#{'active' if action_name == 'canceled'}"
+        span Canceled
+        .badge.badge-warning
+          == @tasks.canceled.count
+  li.nav-item
+    a#done-tab.nav-link href="/tasks/done" class="#{'active' if action_name == 'done'}"
+      span Done
+      .badge.badge-success
+        == @tasks.done.count
+  li.nav-item
+    a#failed-tab.nav-link href="/tasks/failed" class="#{'active' if action_name == 'failed'}"
+      span Failed
+      .badge.badge-danger
+        == @tasks.failed.count
+
+.tab-content
+  - @tasks_scoped.each do |task|
+    == render(partial: "show", locals: { task: task, show_report: false  })

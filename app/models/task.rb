@@ -61,22 +61,6 @@ class Task < ApplicationRecord
     span = Time.at(self.eta.to_i).utc
     "#{span.hour}h #{span.min}m #{span.sec}s"
   end
-  #
-  # def todo?
-  #   self.status == :todo
-  # end
-  #
-  # def in_progress?
-  #   self.status == :in_progress
-  # end
-  #
-  # def done?
-  #   self.status == :done
-  # end
-  #
-  # def failed?
-  #   self.status == :failed
-  # end
 
   def report_available?
     (self.done? || self.failed?) && self.report

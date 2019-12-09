@@ -1,28 +1,38 @@
 class TasksController < ApplicationController
 
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:new_task_for_worker, :update_task, :canceled]
-  skip_before_action :verify_authenticity_token, only: [:new_task_for_worker, :update_task, :canceled]
+  skip_before_action :authenticate_user!, only: [:new_task_for_worker, :update_task, :tasks_canceled]
+  skip_before_action :verify_authenticity_token, only: [:new_task_for_worker, :update_task, :tasks_canceled]
 
-  # GET /tasks
-  # GET /tasks.json
+
+  Task.statuses.keys.each do |status|
+    define_method status do
+      @tasks = Task.all
+      @tasks_scoped = Task.send(status).order(updated_at: :desc)
+      render :tasks
+    end
+  end
+
   def index
-    @tasks = Task.all
-    @tasks_todo = Task.todo
-    @tasks_progress = Task.in_progress.order(progress: :desc)
-    @tasks_canceled = Task.canceled.order(updated_at: :desc)
-    @tasks_done = Task.done.order(updated_at: :desc)
-    @done_today = @tasks_done.select{|t| t.changed_today? }
-    @done_yesterday = @tasks_done.select{|t| t.changed_yesterday? }
-    @done_this_week = @tasks_done.select{|t| t.changed_this_week? }
-    @done_ago = @tasks_done.select{|t| t.changed_ago? }
-    @tasks_failed = @tasks.select{|t| t.failed?}.sort_by{|t| t.updated_at || Time.unix(0) }.reverse
-
-    @tasks = Task.all
+    redirect_to :todo_tasks
   end
 
   def canceled
-    render json: @tasks_canceled = Task.canceled.ids.to_json
+    @tasks = Task.all
+    @tasks_scoped = Task.canceled.order(updated_at: :desc)
+    if @tasks_scoped.size.positive?
+      render :tasks
+    else
+      redirect_to :failed_tasks
+    end
+  end
+
+  def tasks_canceled
+    with_token do
+      @tasks = Task.all
+      @tasks_scoped = Task.canceled.order(updated_at: :desc)
+      render json: Task.canceled.ids.to_json
+    end
   end
 
   # GET /tasks/1
@@ -152,10 +162,18 @@ class TasksController < ApplicationController
   def cancel
     set_task
     @task.canceled!
-    redirect_to :tasks
+    redirect_to :canceled_tasks
   end
 
   private
+
+  def with_token &block
+    if validate_token
+      yield
+    else
+      render json: { error: "Token invalid" }.to_json
+    end
+  end
 
   def validate_token
     params.permit(:token, :worker) && params.has_key?(:token) && params[:token] == "booming-games"
